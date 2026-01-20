@@ -11,6 +11,9 @@ const Color gridColor{239, 211, 215, 255};
 const int cols{screenWidth/cellSize};
 const int rows{screenHeight/cellSize};
 
+//food bild definen
+Texture2D foodTexture;
+
 //grid drawing function
 void DrawGrid()
 {
@@ -62,7 +65,15 @@ class Snake
 
     void grow()
     {
-        body.push_back(body.back());
+        body.push_back(body.back()); //puts a new head and takes the tail away, so that it looks like it's moving
+    }
+
+    void changeDirection(int x, int y)
+    {
+        if (body.size() > 1 && x == -dirX && y == -dirY) return; //if the body size is more than one and the directions make 180 it would crash into its self so it returns so it doesn't happen
+        dirX = x;
+        dirY = y;
+
     }
 };
 
@@ -99,6 +110,25 @@ public:
 
     }
 
+    void DrawFood(cell foodPos)
+    {
+        DrawTexturePro(
+            foodTexture,
+            Rectangle{0, 0, (float)foodTexture.width, (float)foodTexture.height},
+            Rectangle{
+            (float)foodPos.x * cellSize,
+            (float)foodPos.y * cellSize,
+            (float)cellSize,
+            (float)cellSize
+            },
+            Vector2{0, 0},
+            0.0f,
+            WHITE
+            );
+
+
+    }
+
 };
 
 int main()
@@ -106,6 +136,8 @@ int main()
     // Game inhalt. Also alle bedingungen
     InitWindow(screenWidth, screenHeight, "SnakeGamey");
     SetTargetFPS(60);
+
+    foodTexture = LoadTexture("Food.png");
 
     while(!WindowShouldClose())
     {
@@ -115,9 +147,16 @@ int main()
         Color BackgroundColor{254, 234, 250, 255};
         ClearBackground(BackgroundColor);
         DrawGrid();
+        Food food;
+
+        cell foodPosition;
+        foodPosition = {5, 5};
+        food.DrawFood(foodPosition);
 
         EndDrawing();
     }
+
+    UnloadTexture(foodTexture);
 
     CloseWindow();
 
