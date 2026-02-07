@@ -252,6 +252,16 @@ int main()
         {
             DrawText("GAME OVER", screenWidth / 2 - 300, screenHeight / 2 - 30, 100, RED);
             DrawText(TextFormat("score: %i", score),screenWidth / 2 - 70, screenHeight / 2 + 50, 50, GREEN);
+            DrawText("Press R to restart", screenWidth / 2 - 200, screenHeight / 2 + 100, 40, BLUE);
+            if (IsKeyPressed(KEY_R))
+            {
+                gamestate = PLAYING;
+                score = 0;
+                snake = Snake(0, 0); //replaces an old snake with a new snake
+                food.spawnFood(snake.body);
+                moveTimer = 0.0f;
+
+            }
 
         }
 
