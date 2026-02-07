@@ -22,10 +22,11 @@ bool gameOver = false;
 enum gameState
 {
     PLAYING,
-    GAME_OVER
+    GAME_OVER,
+    STARTING
 };
 
-gameState gamestate = PLAYING;
+gameState gamestate = STARTING;
 
 //score count
 int score{0};
@@ -210,6 +211,14 @@ int main()
 
     while(!WindowShouldClose())
     {
+        if (gamestate == STARTING)
+        {
+            DrawText("To start the game \n press ENTER", screenWidth / 2 - 200, screenHeight / 2 - 30, 50, BLUE);
+            if (IsKeyPressed(KEY_ENTER))
+            {
+                gamestate = PLAYING;
+            }
+        }
         if (gamestate == PLAYING)
         {
             //assigning the keys
@@ -255,7 +264,7 @@ int main()
             DrawText("Press R to restart", screenWidth / 2 - 200, screenHeight / 2 + 100, 40, BLUE);
             if (IsKeyPressed(KEY_R))
             {
-                gamestate = PLAYING;
+                gamestate = STARTING;
                 score = 0;
                 snake = Snake(0, 0); //replaces an old snake with a new snake
                 food.spawnFood(snake.body);
